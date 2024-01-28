@@ -47,3 +47,22 @@ const variations = {
     }
   `,
 };
+
+interface PropTypes {
+  variation: "primary" | "secondary" | "danger";
+  size: "small" | "medium" | "large";
+}
+
+const Button = styled.button<PropTypes>`
+  border: none;
+  border-radius: 7px;
+  box-shadow: var(--shadow-sm);
+  &:hover {
+    background-color: var(--color-brand-700);
+  }
+
+  ${(props) => sizes[props.size]}
+  ${(props) => variations[props.variation]}
+`;
+
+export default Button;
