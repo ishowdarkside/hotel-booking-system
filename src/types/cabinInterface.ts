@@ -5,5 +5,5 @@ export interface cabinInterface {
   discount: number;
   regularPrice: number;
   description: string;
-  image: string;
+  image: File;
 }
