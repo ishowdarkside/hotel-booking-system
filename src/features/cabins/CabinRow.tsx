@@ -9,6 +9,7 @@ import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
+import { useCloseModal } from "../../hooks/useCloseModal";
 
 const Img = styled.img`
   display: block;
@@ -59,16 +60,24 @@ function CabinRow({ cabin }: { cabin: cabinInterface }) {
       <Price>{formatCurrency(cabin.regularPrice)}</Price>
       <Discount>{formatCurrency(cabin.discount)}</Discount>
       <div>
-        <button disabled={isDuplicating} onClick={() => handleDuplicate()}>
-          <HiSquare2Stack />
-        </button>
-
         <Modal>
-          <Modal.Open opens="edit">
-            <button>
-              <HiPencil />
-            </button>
-          </Modal.Open>
+          <Menus.Menu>
+            <Menus.Toggle id={cabin.id} />
+
+            <Menus.List id={cabin.id}>
+              <Menus.Button icon={<HiSquare2Stack />} onClick={handleDuplicate}>
+                Duplicate
+              </Menus.Button>
+
+              <Modal.Open opens="edit">
+                <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+              </Modal.Open>
+
+              <Modal.Open opens="delete">
+                <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+              </Modal.Open>
+            </Menus.List>
+          </Menus.Menu>
 
           <Modal.Window name="edit">
             <CreateCabinForm cabinToEdit={cabin} />
@@ -76,12 +85,6 @@ function CabinRow({ cabin }: { cabin: cabinInterface }) {
         </Modal>
 
         <Modal>
-          <Modal.Open opens="delete">
-            <button disabled={isDeleting}>
-              <HiTrash />
-            </button>
-          </Modal.Open>
-
           <Modal.Window name="delete">
             <ConfirmDelete
               resourceName="cabins"
@@ -89,16 +92,6 @@ function CabinRow({ cabin }: { cabin: cabinInterface }) {
               onConfirm={() => deleteCabin(cabin.id)}
             />
           </Modal.Window>
-
-          <Menus.Menu>
-            <Menus.Toggle id={cabin.id} />
-
-            <Menus.List id={cabin.id}>
-              <Menus.Button>Duplicate</Menus.Button>
-              <Menus.Button>Edit</Menus.Button>
-              <Menus.Button>Delete</Menus.Button>
-            </Menus.List>
-          </Menus.Menu>
         </Modal>
       </div>
     </Table.Row>
